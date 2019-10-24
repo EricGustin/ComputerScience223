@@ -1,0 +1,4 @@
+/home/student/Desktop/vm-share/CPSC223/Week4/hw4/CMakeFiles/rebuild_cache.dir
+/home/student/Desktop/vm-share/CPSC223/Week4/hw4/CMakeFiles/hw4test.dir
+/home/student/Desktop/vm-share/CPSC223/Week4/hw4/CMakeFiles/edit_cache.dir
+/home/student/Desktop/vm-share/CPSC223/Week4/hw4/CMakeFiles/hw4perf.dir
