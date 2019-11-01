@@ -1,19 +1,19 @@
 /*Author: Eric Gustin
-  Assignment: CPSC223-01 HW05 hw5_tests.cpp
-  Description: This program tests the binsearch collection. It tests
-  every function in binsearch_collection, and accounts for many edge cases.
+  Assignment: CPSC223-01 HW07 hw7_tests.cpp
+  Description: This program tests the hash_table collection. It tests
+  every function in hash_table_collection, and accounts for many edge cases.
 */
 
 #include <iostream>
 #include <string>
 #include <gtest/gtest.h>
-#include "binsearch_collection.h"
+#include "hash_table_collection.h"
 
 using namespace std;
 
 // Test 1
 TEST(BasicsListTest, CorrectSize) {
- BinSearchCollection<string,double> a;
+ HashTableCollection<string,double> a;
 
  ASSERT_EQ(a.size(), 0);
  a.insert("AAPL", 220.29);
@@ -27,15 +27,21 @@ TEST(BasicsListTest, CorrectSize) {
  a.insert("NFLX", 263.86);
  ASSERT_EQ(a.size(), 5);
 
+ HashTableCollection<string,double> z;
+
+ z = a;
+ ASSERT_EQ(a.size(), z.size());
+
  // make sure doesn't drop to -1
- BinSearchCollection<string,int> zero_list;
+ HashTableCollection<string,int> zero_list;
  zero_list.remove("nothing");
  ASSERT_EQ(zero_list.size(), 0);
+ 
 }
 
 // Test 2
 TEST(BasicListTest, InsertAndFind) {
- BinSearchCollection<string,double> b;
+ HashTableCollection<string,double> b;
  b.insert("e", 50.0);
  b.insert("f", 60.0);
  b.insert("g", 70.0);
@@ -50,6 +56,7 @@ TEST(BasicListTest, InsertAndFind) {
  b.insert("h", 80.0);
  b.insert("m", 130.0);
  b.insert("o", 140.0);
+ 
  double my_key1;
  ASSERT_EQ(b.find("a", my_key1), true);
  ASSERT_EQ(10.0, my_key1);
@@ -66,52 +73,52 @@ TEST(BasicListTest, InsertAndFind) {
 
  // Test 3
 TEST(BasicListTest, RemoveElems) {
- BinSearchCollection<string,double>* c = new BinSearchCollection<string,double>;
+ HashTableCollection<string,double> c;
  // attempt to remove from an empty object
- c->remove("");
- c->insert("a", 10.0);
- c->insert("b", 20.0);
- c->insert("c", 30.0);
- c->insert("d", 40.0);
- c->insert("e", 50.0);
- c->insert("f", 60.0);
+ c.remove("");
+ c.insert("a", 10.0);
+ c.insert("b", 20.0);
+ c.insert("c", 30.0);
+ c.insert("d", 40.0);
+ c.insert("e", 50.0);
+ c.insert("f", 60.0);
 
- ASSERT_EQ(c->size(), 6);
- c->remove("q"); // try to remove an element that is not in c. should do nothing
- ASSERT_EQ(c->size(), 6);
- c->remove("a"); // remove first element
- ASSERT_EQ(c->size(), 5);
+ ASSERT_EQ(c.size(), 6);
+ c.remove("q"); // try to remove an element that is not in c. should do nothing
+ ASSERT_EQ(c.size(), 6);
+ c.remove("a"); // remove first element
 
  double v;
- ASSERT_EQ(c->find("a", v), false);
- ASSERT_EQ(c->find("b", v), true);
+ ASSERT_EQ(c.find("a", v), false);
+ ASSERT_EQ(c.find("b", v), true);
  ASSERT_EQ(v, 20.0);
- ASSERT_EQ(c->find("c", v), true);
+ ASSERT_EQ(c.find("c", v), true);
  ASSERT_EQ(v, 30.0);
- ASSERT_EQ(c->find("d", v), true);
+ ASSERT_EQ(c.find("d", v), true);
  ASSERT_EQ(v, 40.0);
- ASSERT_EQ(c->find("e", v), true);
+ ASSERT_EQ(c.find("e", v), true);
  ASSERT_EQ(v, 50.0);
- ASSERT_EQ(c->find("f", v), true);
+ ASSERT_EQ(c.find("f", v), true);
  ASSERT_EQ(v, 60.0);
- c->remove("f"); // remove last element
- ASSERT_EQ(c->size(), 4);
- vector<string> mine;
- c->keys(mine);
- ASSERT_EQ(c->find("f", v), false);
- c->remove("d"); // remove non edge element
- ASSERT_EQ(c->size(), 3);
- ASSERT_EQ(c->find("d", v), false);
- c->remove("b");
- c->remove("c");
- c->remove("e"); // remove the only element in the list
- ASSERT_EQ(c->size(), 0);
- delete c;
+ 
+ c.remove("f"); // remove last element
+ 
+ ASSERT_EQ(c.size(), 4);
+ ASSERT_EQ(c.find("f", v), false);
+ c.remove("d"); // remove non edge element
+ ASSERT_EQ(c.size(), 3);
+ ASSERT_EQ(c.find("d", v), false);
+
+ c.remove("b");
+ 
+ c.remove("c");
+ c.remove("e"); // remove the only element in the list
+ ASSERT_EQ(c.size(), 0);
 }
 
  // Test 4
 TEST(BasicListTest, GetKeys) {
- BinSearchCollection<string,double>* d = new BinSearchCollection<string,double>;
+ HashTableCollection<string,double>* d = new HashTableCollection<string,double>;
  d->insert("a", 10.0);
  d->insert("b", 20.0);
  d->insert("c", 30.0);
@@ -131,7 +138,7 @@ TEST(BasicListTest, GetKeys) {
 
  // Test 5
 TEST(BasicListTest, GetKeyRange) {
- BinSearchCollection<string,double>* e = new BinSearchCollection<string,double>;
+ HashTableCollection<string,double>* e = new HashTableCollection<string,double>;
  e->insert("a", 10.0);
  e->insert("b", 20.0);
  e->insert("c", 30.0);
@@ -154,7 +161,7 @@ TEST(BasicListTest, GetKeyRange) {
  delete e;
  // test if find range works for strings
  // longer than one character
- BinSearchCollection<string,double>* f = new BinSearchCollection<string,double>;
+ HashTableCollection<string,double>* f = new HashTableCollection<string,double>;
  f->insert("apples", 10);
  f->insert("golf", 20);
  f->insert("hydro", 30);
@@ -187,7 +194,7 @@ TEST(BasicListTest, GetKeyRange) {
 
  // Test 6
 TEST(BasicListTest, KeySort) {
- BinSearchCollection<string,double>* g = new BinSearchCollection<string,double>;
+ HashTableCollection<string,double>* g = new HashTableCollection<string,double>;
  g->insert("e", 50.0);
  g->insert("a", 10.0);
  g->insert("d", 40.0);
@@ -206,7 +213,7 @@ TEST(BasicListTest, KeySort) {
   ASSERT_LE(sorted_ks[i], sorted_ks[i+1]);
  delete g;
 
- BinSearchCollection<string,double>* h = new BinSearchCollection<string,double>;
+ HashTableCollection<string,double>* h = new HashTableCollection<string,double>;
  h->insert("anagrams", 23);
  h->insert("hemmingson", 1);
  h->insert("regis", 99);
@@ -221,8 +228,59 @@ TEST(BasicListTest, KeySort) {
  delete h;
 }
 
+TEST(BasicListTest, CopyList) {
+ HashTableCollection<string,int> w;
+ w.insert("goodbye", 11);
+ w.insert("computer", 12);
+ w.insert("forever", 122);
+ w.insert("never", 2110);
+ HashTableCollection<string,int> w_copy = w;
+ ASSERT_EQ(w_copy.size(), w.size());
+
+ vector<string> w_keys;
+ vector<string> w_copy_keys;
+ w.sort(w_keys);
+ w_copy.sort(w_copy_keys);
+ for (int i = 0; i <= 3; ++i)
+ {
+  ASSERT_EQ(w_keys[i], w_copy_keys[i]);
+ }
+ // copy constructor with empty hash table
+ HashTableCollection<string,int> empty;
+ HashTableCollection<string,int> empty_copy(empty);
+ ASSERT_EQ(empty.size(), 0);
+ ASSERT_EQ(empty_copy.size(), 0);
+}
+
+TEST(BasicListTest, Assign) {
+ HashTableCollection<string,int> y;
+ y.insert("g", 144);
+ y.insert("ss", 344);
+ y.insert("xp", 533);
+ y.insert("er", 332);
+ y.insert("a", 340);
+ y.insert("go", 530);
+
+ HashTableCollection<string,int> z;
+ z.insert("China", 5631);
+ z.insert("Non", 6335);
+ z.insert("TV", 3320);
+ z = y;
+ vector<string> z_keys;
+ vector<string> y_keys;
+ y.sort(y_keys);
+ z.sort(z_keys);
+ ASSERT_EQ(z.size(), 6);
+ for (int i = 0; i <= 5; ++i)
+ {
+  ASSERT_EQ(y_keys[i], z_keys[i]);
+ }
+ // assignment operator will not do copying if trying to copy itself.
+ z = z;
+}
+
 TEST(BasicListTest, Negatives) {
- BinSearchCollection<double,string>* l = new BinSearchCollection<double,string>;
+ HashTableCollection<double,string>* l = new HashTableCollection<double,string>;
  l->insert(999.0, "DigitalLogic");
  l->insert(400.4, "AlgsAndDataStruct");
  l->insert(-33.2, "discreteMath");
@@ -239,7 +297,7 @@ TEST(BasicListTest, Negatives) {
 }
 
 TEST(BasicListTest, SizeZero) {
- BinSearchCollection<int,int>* m = new BinSearchCollection<int,int>;
+ HashTableCollection<int,int>* m = new HashTableCollection<int,int>;
  ASSERT_EQ(m->size(), 0);
  m->remove(2);
  ASSERT_EQ(m->size(), 0);
@@ -251,6 +309,48 @@ TEST(BasicListTest, SizeZero) {
  m->sort(keys_ints);
  ASSERT_EQ(keys_ints.size(), 0);
  delete m;
+}
+ 
+TEST(BasicListTest, ResizeRehash) {
+ HashTableCollection<int,int> n;
+ // test to see if the hashtable rehashes
+ for (int i = 0; i < 256; ++i) {
+  n.insert(i, i+500);
+ }
+ ASSERT_EQ(n.size(), 256);
+
+ vector<int> my_keys;
+ n.keys(my_keys);
+ 
+ int j = 255;
+ while (n.size() > 0) {
+  n.remove(my_keys[j]);
+  --j;
+ }
+ ASSERT_EQ(n.size(), 0);
+ vector<int> my_keys2;
+ n.keys(my_keys2);
+ ASSERT_EQ(my_keys2.size(), 0);
+
+
+}
+
+TEST(BasicListTest, BigDataSet) {
+ HashTableCollection<int,int> o;
+ // insert 50,000 KV pairs
+ for (int i = 0; i < 50000; ++i)
+  o.insert(i, i+400);
+ vector<int> my_keys3;
+ o.keys(my_keys3);
+ ASSERT_EQ(my_keys3.size(), 50000);
+ // remove 50,000 KV pairs
+ int j = 50000;
+ while (j >= 0) {
+  o.remove(my_keys3[j]);
+  --j;
+ }
+ ASSERT_EQ(o.size(), 0);
+
 }
 
 int main(int argc, char** argv)

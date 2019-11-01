@@ -166,7 +166,7 @@ int TestDriver<K,V>::timed_find(std::fstream& in_file)
   V value;
   in_file >> key;
   auto start = high_resolution_clock::now();
-  test_collection->find(key, value);
+  bool found_it = test_collection->find(key, value);
   auto end = high_resolution_clock::now();
   auto time = duration_cast<microseconds>(end - start);
   int duration = time.count();
