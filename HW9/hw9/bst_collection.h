@@ -83,6 +83,8 @@ private:
  // return the height of the tree rooted at subtree_root
  int height(const Node* subtree_root) const;
 
+ // helper to recursively remove key in BST
+ Node* remove_helper(Node* subtree_root, const K& key);
 };
 
 
@@ -195,10 +197,70 @@ void BSTCollection<K,V>::insert(const K& key, const V& val)
 template <typename K, typename V>
 void BSTCollection<K,V>::remove(const K& key)
 {
- // ... Leave empty for now ...
- // ... SAVE FOR HW 9 ...
+ // remove desired node
+ remove_helper(root, key);
 }
 
+template <typename K, typename V>
+typename BSTCollection<K,V>::Node*
+BSTCollection<K,V>::remove_helper(Node* subtree_root, const K& key)
+{
+ // go left
+ if (subtree_root && key < subtree_root->key)
+  subtree_root->left = remove_helper(subtree_root->left, key);
+
+ // go right
+ else if (subtree_root && key > subtree_root->key)
+  subtree_root->right = remove_helper(subtree_root->right, key);
+
+ else if (subtree_root && key == subtree_root->key) {
+  //case1: leaf.
+  if (subtree_root->left == nullptr && subtree_root->right == nullptr) {
+   delete subtree_root;
+   subtree_root = nullptr;
+   --collection_size;
+   return nullptr;
+  }
+  // case2: one child
+  else if (subtree_root->left == nullptr ^ subtree_root->right == nullptr) {
+   Node* replace = nullptr;
+   // ternanry conditional
+   (subtree_root->left != nullptr) ? (replace = subtree_root->left) : (replace = subtree_root->right);
+   delete subtree_root;
+   subtree_root = nullptr;
+   --collection_size;
+   return replace;
+
+  }
+  //case3: two children.
+  else if (subtree_root->left != nullptr && subtree_root->right != nullptr) {
+   Node* successor = subtree_root->right;
+   // right child doesn't have a left child, so inorder successor = right child
+   if (successor->left == nullptr) {
+    // copy contents of sucessor into subtree_root
+    subtree_root->key = successor->key;
+    subtree_root->value = successor->value;
+    subtree_root->right = successor->right;
+    delete successor;
+    successor = nullptr;
+    --collection_size;
+   }
+   else {
+    // iteratively find inorder successor
+    while (successor->left != nullptr)
+     successor = successor->left;
+    K k = successor->key;
+    V v = successor->value;
+    // remove leaf node
+    remove_helper(root, successor->key);
+    // copy contents or inorder successor into subtree_root
+    subtree_root->key = k;
+    subtree_root->value = v;
+   }
+  }
+ }
+ return subtree_root;
+}
 
 template <typename K, typename V>
 bool BSTCollection<K,V>::find(const K& key, V& val) const
