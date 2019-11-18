@@ -93,7 +93,25 @@ TEST(BasicCollectionTest, RemoveElems) {
  ASSERT_EQ(false, e.find("c", v));
  ASSERT_EQ(true, e.find("e", v));
  ASSERT_EQ(true, e.find("cd", v));
-
+ e.remove ("d");
+ ASSERT_EQ(5, e.size());
+ ASSERT_EQ(false, e.find("d", v));
+ ASSERT_EQ(true, e.find("b", v));
+ e.remove("f"); // remove a root node with two children
+ ASSERT_EQ(4, e.size());
+ ASSERT_EQ(false, e.find("f", v));
+ ASSERT_EQ(true, e.find("i", v));
+ e.remove("i"); // remove a root that has one child
+ ASSERT_EQ(3, e.size());
+ ASSERT_EQ(false, e.find("i", v));
+ ASSERT_EQ(true, e.find("b", v)); 
+ e.remove("b");
+ e.remove("cd");
+ ASSERT_EQ(1, e.size());
+ ASSERT_EQ(true, e.find("e", v)); 
+ e.remove("e");
+ ASSERT_EQ(0, e.size());
+ ASSERT_EQ(false, e.find("e", v)); 
 
  BSTCollection<string,double> f;
  f.insert("f", 30.0);
@@ -331,7 +349,7 @@ TEST(BasicCollectionTest, Negatives) {
 TEST(BasicCollectionTest, SizeZero) {
  BSTCollection<int,int>* m = new BSTCollection<int,int>;
  ASSERT_EQ(m->size(), 0);
- m->remove(2);
+ m->remove(2); // remove from BST that is empty
  ASSERT_EQ(m->size(), 0);
  int my_val;
  ASSERT_EQ(m->find(0, my_val), false);

@@ -198,7 +198,12 @@ template <typename K, typename V>
 void BSTCollection<K,V>::remove(const K& key)
 {
  // remove desired node
- remove_helper(root, key);
+ if (collection_size > 0) {
+  if (root->key == key)
+   root = remove_helper(root, key);
+  else
+   remove_helper(root, key);
+ }
 }
 
 template <typename K, typename V>
