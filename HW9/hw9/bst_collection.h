@@ -1,7 +1,7 @@
 /*Author: Eric Gustin
-  Assignment: CPSC223-01 HW08 bst_collection.h
+  Assignment: CPSC223-01 HW09 bst_collection.h
   Description: Binary Search Tree implementation of the
-  collection class. Contains all collection methods except for "remove".
+  collection class. Contains all collection methods including remove.
 */
 #ifndef BST_COLLECTION_H
 #define BST_COLLECTION_H
