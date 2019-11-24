@@ -1,7 +1,7 @@
 /*Author: Eric Gustin
-  Assignment: CPSC223-01 HW08 hw8_tests.cpp
+  Assignment: CPSC223-01 HW09 hw9_tests.cpp
   Description: This program tests the biunary search tree collection.
-  It tests every function in bst_collection.h, except for "remove"
+  It tests every function in bst_collection.h
 */
 #include <iostream>
 #include <string>

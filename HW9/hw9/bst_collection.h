@@ -210,6 +210,8 @@ template <typename K, typename V>
 typename BSTCollection<K,V>::Node*
 BSTCollection<K,V>::remove_helper(Node* subtree_root, const K& key)
 {
+ // BST is empty
+ 
  // go left
  if (subtree_root && key < subtree_root->key)
   subtree_root->left = remove_helper(subtree_root->left, key);
